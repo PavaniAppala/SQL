@@ -1,0 +1,194 @@
+CREATE TABLE Customer(id int PRIMARY KEY,
+                      FirstName nvarchar(40) NOT NULL,
+					  LastName nvarchar(40),
+					  City nvarchar(40),
+					  Country nvarchar(40),
+					  Phone nvarchar(20),
+					  FaxNumber nvarchar(20),
+					  No_of_Orders nvarchar(20));
+SELECT * FROM Customer;
+
+CREATE INDEX Name ON Customer(FirstName,LastName);
+
+INSERT INTO Customer VALUES('101','kusala','kommula','kakinada','India','9876655432','3456789','3');
+INSERT INTO Customer VALUES('102','Shivani','Donne','Mexico','Australia','9466883733','3789346','2');
+INSERT INTO Customer VALUES('103','Durga','Ravula','Washington','Germany','030-0074321','3935627','4');
+INSERT INTO Customer VALUES('104','Varun','paruva','Texas','London','8673450912','3789869','1');
+INSERT INTO Customer VALUES('105','askara','kumm','manni','africa','8645657678','3789765','5');
+INSERT INTO Customer VALUES('106','pari','karry','tally','europe','8673450956','37898567','6');
+INSERT INTO Customer VALUES('107','pravalika','barri','eng','canada','8673450897','3789923','7');
+INSERT INTO Customer VALUES('108','sony','bokka','kali','england','86734506678','3789876','8');
+
+
+SELECT * FROM Customer;
+
+
+CREATE TABLE Order1(Order_id int PRIMARY KEY,
+                      Order_date DATETIME,
+					  Order_no nvarchar(10),
+					  id int FOREIGN KEY REFERENCES Customer(id),
+					  tot_amt DECIMAL(12,2));
+
+CREATE INDEX id ON Order1(id);
+
+CREATE INDEX Order_date ON Order1(Order_date);
+
+INSERT INTO Order1 VALUES('111','4/12/1987',1560,'101',5000);
+INSERT INTO Order1 VALUES('222','3/10/1999',1561,'102',6000);
+INSERT INTO Order1 VALUES('333','2/9/2007',1562,'103',7000);
+INSERT INTO Order1 VALUES('444','4/8/2001',1563,'104',8000);
+
+
+
+SELECT * FROM Order1;
+
+CREATE TABLE Product2(Id int PRIMARY KEY,
+                     ProductName nvarchar(50),
+					 unitprice decimal(12,2),
+					 package nvarchar(30),
+					 Isdiscontinued bit,
+					 Category nvarchar(20),
+					 SuppliedBy nvarchar(50) FOREIGN KEY REFERENCES SupplierDetails2(SuppliedBy));
+
+INSERT INTO Product2 VALUES(101,'soap',3,'done',0,'shampoo','Exotic Liquids');
+INSERT INTO Product2 VALUES(102,'blender',11,'done',0,'Kitchen','fancy solutions');
+INSERT INTO Product2 VALUES(103,'clothes',10,'done',1,'fashion','lacome d abondance');
+INSERT INTO Product2 VALUES(104,'fish',9,'done',1,' Seafood','pavani solutions');		
+
+SELECT * FROM Product2;
+
+CREATE INDEX ProductName on Product2(ProductName);
+
+CREATE TABLE SupplierDetails2(Id int,
+                      SuppliedBy nvarchar(50) PRIMARY KEY,
+					  Shipname nvarchar(50),
+					  Suppliername nvarchar(50),
+					  ShippingCompanyName nvarchar(50),
+					  Shipped Bit,
+					  ShippingDate Datetime,
+					  );
+
+INSERT INTO SupplierDetails2 VALUES('123','pavani solutions','kiya','saraf','pavani', 0,4/10/2022);
+INSERT INTO SupplierDetails2 VALUES('143','fancy solutions','Moh','prabhu','vaishu',1,6/10/2022);
+INSERT INTO SupplierDetails2 VALUES('133','Exotic Liquids','Kiya','rohit','pavani',1,8/10/2022);
+INSERT INTO SupplierDetails2 VALUES('122','lacome d abondance','Moh','lohi','vaishu',1,10/10/2022);
+
+SELECT * FROM SupplierDetails2;
+
+CREATE TABLE OrderItem(Id int PRIMARY KEY,
+                      Order_id int FOREIGN KEY REFERENCES Order1(Order_id),
+					  ProductId int FOREIGN KEY REFERENCES Product2(Id),
+					  UnitPrice DECIMAL(12,2),
+					  Quantity int);
+
+INSERT INTO OrderItem VALUES(101,111,101,40.0,32);
+INSERT INTO OrderItem VALUES(102,222,102,45.0,14);
+INSERT INTO OrderItem VALUES(103,333,103,76.0,23);
+INSERT INTO OrderItem VALUES(104,444,104,33.0,56);
+INSERT INTO OrderItem VALUES(105,555,12,32.0,42);
+INSERT INTO OrderItem VALUES(106,666,15,31.0,53);
+INSERT INTO OrderItem VALUES(107,777,18,38.0,25);
+INSERT INTO OrderItem VALUES(108,888,16,35.0,58);
+
+
+
+
+
+CREATE INDEX Order_id ON OrderItem(Order_id);
+CREATE INDEX ProductId ON OrderItem(ProductId);
+
+SELECT * FROM OrderItem;
+
+CREATE TABLE Employee(EmpName nvarchar(50),
+                      Empid int PRIMARY KEY,
+					  ManagerName nvarchar(50),
+					  Department nvarchar(50),
+					  Rating int,
+					  JoiningDate datetime);
+INSERT INTO Employee VALUES('saraf',101,'rajesh','sales',4,2019/08/02);
+INSERT INTO Employee VALUES('Ravi',102,'pavan','cloud',2,2018/02/08);
+INSERT INTO Employee VALUES('shiva',103,'maha','marketing',4,2014/09/20);
+INSERT INTO Employee VALUES('geeta',104,'saisree','analyst',3,2022/09/20);
+
+Assignment 1
+
+SELECT * FROM Employee;
+
+SELECT * FROM Customer where Country LIKE 'A%' or Country LIKE 'I%' ;
+
+SELECT * from Customer where FirstName LIKE '__I%';
+
+Assignment 2
+
+SELECT * FROM Customer where Country='Germany';
+
+SELECT FirstName +''+LastName as Name from Customer;
+					  
+SELECT * from Customer Where FaxNumber is Not null;
+
+SELECT * from Customer ORDER BY FaxNumber;
+
+select * from Customer Where FirstName  like '_u%' ; 
+
+select * from OrderItem where UnitPrice >10 and UnitPrice <20;
+
+select * from SupplierDetails2 order by ShippingDate;
+
+select ShipName,SuppliedBy from SupplierDetails2 where ShipName='Kiya' and ShippingDate between '03/10/2022' and  '10/10/2022'
+
+SELECT * FROM Product2 where SuppliedBy='Exotic Liquids';
+
+SELECT AVG(Quantity) FROM OrderItem;
+
+SELECT ShippingCompanyName,ShipName FROM SupplierDetails2;
+
+SELECT EmpName,ManagerName FROM Employee;
+
+SELECT Id,Category FROM Product2;
+
+Assignment 3
+
+SELECT*FROM Customer WHERE Phone ='030-0074321';
+
+SELECT *FROM Product2 WHERE Category ='Seafood';
+
+SELECT * FROM Customer WHERE country !='London';
+
+SELECT * FROM Product2 WHERE ProductName ='fish';
+
+SELECT EmpName,Department,Rating FROM Employee;
+
+Assignment 4
+
+select * from Employee order by JoiningDate;
+
+SELECT*FROM Employee e WHERE JoiningDate IN(SELECT max(JoiningDate) FROM Employee WHERE e.Empid = Empid) ORDER BY JoiningDate DESC;
+
+select ProductName,UnitPrice FROM Product2 order by Unitprice desc ;
+
+select * from Product2 where IsDiscontinued='0';
+
+select * from Product2	where UnitPrice<50;
+
+select Category, SuppliedBy from Product2;
+
+Select * from Customer Where No_Of_Orders='8';
+
+select SUBSTRING(FirstName,3,4) from Customer;
+
+select SUBSTRING(Suppliername,1,1), SUBSTRING(ShippingCompanyName,1,1) FROM SupplierDetails2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
